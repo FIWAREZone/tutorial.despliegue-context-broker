@@ -1,0 +1,2116 @@
+{
+	"info": {
+		"_postman_id": "110d28ca-d012-45cb-bbf1-e86fcacfa011",
+		"name": "FIWARE Zone Course",
+		"description": "A set with the basic API operations used by ThikingCities platform, covering:\n\n* IDM & Auth\n* Orion Context Broker\n* STH\n* Perseo CEP\n* IoT Agents ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "IDM & Auth",
+			"item": [
+				{
+					"name": "Get auth token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "369f02c4-1366-4862-a087-a56d655646b9",
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable(\"token\", postman.getResponseHeader(\"X-Subject-Token\"));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"auth\": {\r\n        \"identity\": {\r\n            \"methods\": [\r\n                \"password\"\r\n            ],\r\n            \"password\": {\r\n                \"user\": {\r\n                    \"domain\": {\r\n                        \"name\": \"{{service}}\"\r\n                    },\r\n                    \"name\": \"{{user}}\",\r\n                    \"password\": \"{{password}}\"\r\n                }\r\n            }\r\n        },\r\n        \"scope\": {\r\n            \"project\": {\r\n                \"domain\": {\r\n                    \"name\": \"{{service}}\"\r\n                },\r\n                \"name\": \"{{subservice}}\"\r\n            }\r\n        }\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}:15001/v3/auth/tokens",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "15001",
+							"path": [
+								"v3",
+								"auth",
+								"tokens"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orion Context Broker",
+			"item": [
+				{
+					"name": "Get all types",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/types",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single type",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/types/Vehicle",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"types",
+								"Vehicle"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all entities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/entities",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"entities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create entity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"myEntity\",\n\t\"type\": \"myType\",\n\t\"description\": {\n\t\t\"value\": \"My happy entity\",\n\t\t\"type\": \"Text\"\n\t},\n\t\"online\": {\n\t\t\"value\": true,\n\t\t\"type\": \"Boolean\"\n\t},\n\t\"temperature\": {\n\t\t\"value\": 42.3,\n\t\t\"type\": \"Number\"\n\t}\n}\n\t\t"
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/entities",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"entities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single entity",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/entities/myEntity",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"entities",
+								"myEntity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update entity attributes (append & update)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"online\": {\n\t\t\"value\": false,\n\t\t\"type\": \"Boolean\"\n\t}\n}\n\t\t"
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/entities/myEntity/attrs",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"entities",
+								"myEntity",
+								"attrs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update entity attributes (strict update)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"online\": {\n\t\t\"value\": false,\n\t\t\"type\": \"Boolean\"\n\t}\n}\n\t\t"
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/entities/myEntity/attrs",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"entities",
+								"myEntity",
+								"attrs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update entity attributes (replace)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"description\": {\n\t\t\"value\": \"My even more happy entity\",\n\t\t\"type\": \"Text\"\n\t},\n\t\"status\": {\n\t\t\"value\": \"active\",\n\t\t\"type\": \"Text\"\n\t},\n\t\"humidity\": {\n\t\t\"value\": 61.23,\n\t\t\"type\": \"Number\"\n\t}\n}\t\t"
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/entities/myEntity/attrs",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"entities",
+								"myEntity",
+								"attrs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a single entity",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/entities/myEntity",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"entities",
+								"myEntity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get attribute",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/entities/myEntity/attrs/temperature",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"entities",
+								"myEntity",
+								"attrs",
+								"temperature"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update attribute",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"Number\",\n    \"value\": -10.2\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/entities/myEntity/attrs/temperature",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"entities",
+								"myEntity",
+								"attrs",
+								"temperature"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete attribute",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/entities/myEntity/attrs/temperature",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"entities",
+								"myEntity",
+								"attrs",
+								"temperature"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get attribute value as text",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/entities/myEntity/attrs/description/value",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"entities",
+								"myEntity",
+								"attrs",
+								"description",
+								"value"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set attribute value as text",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/plain"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\"New description\""
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/entities/myEntity/attrs/description/value",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"entities",
+								"myEntity",
+								"attrs",
+								"description",
+								"value"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all subscriptions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/subscriptions",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create subscription",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"A subscription to get info about myEntity\",\r\n  \"subject\": {\r\n    \"entities\": [\r\n      {\r\n        \"id\": \"myEntity\",\r\n        \"type\": \"myType\"\r\n      }\r\n    ],\r\n    \"condition\": {\r\n      \"attrs\": [ ]\r\n    }\r\n  },\r\n  \"notification\": {\r\n    \"http\": {\r\n      \"url\": \"http://putsreq.com/aGSZ2hnoTXRaO4JHZNY1\"\r\n    },\r\n    \"attrs\": [\r\n      \"temperature\"\r\n    ]\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/subscriptions",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create subscription (custom notification)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"A subscription to get info about myEntity\",\r\n  \"subject\": {\r\n    \"entities\": [\r\n      {\r\n        \"id\": \"myEntity\",\r\n        \"type\": \"myType\"\r\n      }\r\n    ],\r\n    \"condition\": {\r\n      \"attrs\": [ ]\r\n    }\r\n  },\r\n  \"notification\": {\r\n    \"httpCustom\": {\r\n      \"url\": \"http://putsreq.com/aGSZ2hnoTXRaO4JHZNY1\",\r\n      \"headers\": {\r\n      \t\"Content-Type\": \"application/xml\",\r\n      \t\"X-EntityType\": \"${type}\"\r\n      },\r\n      \"qs\": {\r\n      \t\"entityId\": \"${id}\"\r\n      },\r\n      \"payload\": \"%3Ctemperature%3E${temperature}%3C/temperature%3E\"\r\n    },\r\n    \"attrs\": [\r\n      \"temperature\"\r\n    ]\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/subscriptions",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single subscription",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/subscriptions/59e8c603779d7a40b18c714d",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"subscriptions",
+								"59e8c603779d7a40b18c714d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update subscription",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"status\": \"inactive\"\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/subscriptions/59e8c603779d7a40b18c714d",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"subscriptions",
+								"59e8c603779d7a40b18c714d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a single subscription",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v2/subscriptions/59e8c603779d7a40b18c714d",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v2",
+								"subscriptions",
+								"59e8c603779d7a40b18c714d"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "STH",
+			"item": [
+				{
+					"name": "Get attribute history",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:18666/STH/v1/contextEntities/type/myType/id/myEntity/attributes/temperature?hLimit=3&hOffset=0&dateFrom=2017-10-16T00:00:00.000Z&dateTo=2017-10-26T23:59:59.999Z",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "18666",
+							"path": [
+								"STH",
+								"v1",
+								"contextEntities",
+								"type",
+								"myType",
+								"id",
+								"myEntity",
+								"attributes",
+								"temperature"
+							],
+							"query": [
+								{
+									"key": "hLimit",
+									"value": "3"
+								},
+								{
+									"key": "hOffset",
+									"value": "0"
+								},
+								{
+									"key": "dateFrom",
+									"value": "2017-10-16T00:00:00.000Z"
+								},
+								{
+									"key": "dateTo",
+									"value": "2017-10-26T23:59:59.999Z\n"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get attribute aggregation",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:18666/STH/v1/contextEntities/type/myType/id/myEntity/attributes/temperature?aggrMethod=sum&aggrPeriod=hour&dateFrom=2017-10-16T00:00:00.000Z&dateTo=2017-10-26T23:59:59.999Z",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "18666",
+							"path": [
+								"STH",
+								"v1",
+								"contextEntities",
+								"type",
+								"myType",
+								"id",
+								"myEntity",
+								"attributes",
+								"temperature"
+							],
+							"query": [
+								{
+									"key": "aggrMethod",
+									"value": "sum"
+								},
+								{
+									"key": "aggrPeriod",
+									"value": "hour"
+								},
+								{
+									"key": "dateFrom",
+									"value": "2017-10-16T00:00:00.000Z"
+								},
+								{
+									"key": "dateTo",
+									"value": "2017-10-26T23:59:59.999Z\n"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Perseo CEP",
+			"item": [
+				{
+					"name": "Get rules",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:18090/rules",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "18090",
+							"path": [
+								"rules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create rule (email)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"LowTemperature\",\r\n    \"text\": \"select *,\\\"LowTemperature\\\" as ruleName from pattern [every ev=iotEvent((cast(`id`?, String)  regexp  \\\"myEntity\\\") AND (cast(`type`?, String)  =  \\\"myType\\\") AND (cast(cast(`temperature`?, String), float)  <  10))]\",\r\n\t\"action\": {\r\n        \"type\": \"email\",\r\n        \"template\": \"Entity ${id} temperature is ${temperature}\",\r\n        \"parameters\": {\r\n            \"to\": \"john_doe@fakedomain.com\",\r\n            \"from\": \"no-reply@iotplatform.telefonica.com\",\r\n            \"subject\": \"Low temperature\"\r\n        }\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}:18090/rules",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "18090",
+							"path": [
+								"rules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create rule (entity update)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"BatteryLow\",\r\n    \"text\": \"select *,\\\"BatteryLow\\\" as ruleName from pattern [every ev=iotEvent((cast(`type`?, String)  =  \\\"Lamp\\\") AND (cast(cast(`battery`?, String), float)  <  10))]\",\r\n\t\"action\": {\r\n        \"type\": \"update\",\r\n        \"parameters\": {\r\n            \"id\": \"TestEntity1\",\r\n            \"type\": \"TestEntity\",\r\n            \"attributes\": [\r\n            \t{\r\n            \t\t\"name\": \"msg\",\r\n            \t\t\"value\": \"Battery in ${id} is ${battery}\"\r\n            \t}\r\n            ]\r\n        }\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}:18090/rules",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "18090",
+							"path": [
+								"rules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete rule",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:18090/rules/LowTemperature",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "18090",
+							"path": [
+								"rules",
+								"LowTemperature"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a rules",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}:18090/rules/LowTemperature",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "18090",
+							"path": [
+								"rules",
+								"LowTemperature"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "IoT Agent",
+			"item": [
+				{
+					"name": "IoTAs / register UL device",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON;",
+									"try {",
+									"    tests[\"Body contains headers\"] = responseBody.has(\"headers\");",
+									"    responseJSON = JSON.parse(responseBody);",
+									"    tests[\"Header contains host\"] = \"host\" in responseJSON.headers;",
+									"    tests[\"Header contains test parameter sent as part of request header\"] = \"my-sample-header\" in responseJSON.headers;",
+									"}",
+									"catch (e) { }",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r    \"devices\": [ \r        { \r            \"device_id\": \"id_sen1\", \r            \"entity_name\": \"sen1\", \r            \"entity_type\": \"sensor\", \r            \"attributes\": [ \r                  { \"object_id\": \"t\", \"name\": \"temperature\", \"type\": \"float\" },\r                  { \"object_id\": \"h\", \"name\": \"humidity\", \"type\": \"float\" }\r            ],\r            \"lazy\":[\r                  { \"object_id\": \"l\", \"name\": \"luminosity\", \"type\": \"percentage\" }\r            ],\r            \"commands\": [\r                  { \"object_id\": \"u\", \"name\": \"turn\", \"type\": \"string\" }\r            ],\r            \"static_attributes\": [\r                  { \"name\": \"serialID\", \"type\": \"string\", \"value\": \"02598347\" }\r            ],\r      \"protocol\": \"IoTA-UL\",\r      \"transport\": \"HTTP\"\r        }\r    ]\r}\r"
+						},
+						"url": {
+							"raw": "https://{{host_iota}}:8088/iot/devices",
+							"protocol": "https",
+							"host": [
+								"{{host_iota}}"
+							],
+							"port": "8088",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IoTAs / register Json device",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "07f92543-803b-49eb-86af-9c6d1c8998d5",
+								"exec": [
+									"var responseJSON;",
+									"try {",
+									"    tests[\"Body contains headers\"] = responseBody.has(\"headers\");",
+									"    responseJSON = JSON.parse(responseBody);",
+									"    tests[\"Header contains host\"] = \"host\" in responseJSON.headers;",
+									"    tests[\"Header contains test parameter sent as part of request header\"] = \"my-sample-header\" in responseJSON.headers;",
+									"}",
+									"catch (e) { }",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r  \"devices\": [\r    {\r      \"device_id\": \"id_sen2\",\r      \"entity_name\": \"sen2\",\r      \"entity_type\": \"sensor\",\r      \"attributes\": [\r        { \r          \"object_id\": \"t\", \r          \"name\": \"temperature\", \r          \"type\": \"float\" \r        \t\r        },\r        { \r          \"object_id\": \"h\", \r          \"name\": \"humidity\", \r          \"type\": \"float\"        \t\r        }\r      ],\r      \"protocol\": \"IoTA-JSON\",\r      \"transport\": \"HTTP\"\r    }\r  ]\r}\r"
+						},
+						"url": {
+							"raw": "https://{{host_iota}}:8088/iot/devices",
+							"protocol": "https",
+							"host": [
+								"{{host_iota}}"
+							],
+							"port": "8088",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IoTAs / delete configuration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON;",
+									"try {",
+									"    tests[\"Body contains headers\"] = responseBody.has(\"headers\");",
+									"    responseJSON = JSON.parse(responseBody);",
+									"    tests[\"Header contains host\"] = \"host\" in responseJSON.headers;",
+									"    tests[\"Header contains test parameter sent as part of request header\"] = \"my-sample-header\" in responseJSON.headers;",
+									"}",
+									"catch (e) { }",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host_iota}}:8088/iot/services?apikey=AAFF9977&resource=/iot/json",
+							"protocol": "https",
+							"host": [
+								"{{host_iota}}"
+							],
+							"port": "8088",
+							"path": [
+								"iot",
+								"services"
+							],
+							"query": [
+								{
+									"key": "apikey",
+									"value": "AAFF9977"
+								},
+								{
+									"key": "resource",
+									"value": "/iot/json"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IoTAs / about",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON;",
+									"try {",
+									"    tests[\"Body contains headers\"] = responseBody.has(\"headers\");",
+									"    responseJSON = JSON.parse(responseBody);",
+									"    tests[\"Header contains host\"] = \"host\" in responseJSON.headers;",
+									"    tests[\"Header contains test parameter sent as part of request header\"] = \"my-sample-header\" in responseJSON.headers;",
+									"}",
+									"catch (e) { }",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host_iota}}:8088/iot/devices/Sensor123CMD?protocol=IoTA-UL",
+							"protocol": "https",
+							"host": [
+								"{{host_iota}}"
+							],
+							"port": "8088",
+							"path": [
+								"iot",
+								"devices",
+								"Sensor123CMD"
+							],
+							"query": [
+								{
+									"key": "protocol",
+									"value": "IoTA-UL"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IoTAs / registered devices",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON;",
+									"try {",
+									"    tests[\"Body contains headers\"] = responseBody.has(\"headers\");",
+									"    responseJSON = JSON.parse(responseBody);",
+									"    tests[\"Header contains host\"] = \"host\" in responseJSON.headers;",
+									"    tests[\"Header contains test parameter sent as part of request header\"] = \"my-sample-header\" in responseJSON.headers;",
+									"}",
+									"catch (e) { }",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host_iota}}:8088/iot/devices",
+							"protocol": "https",
+							"host": [
+								"{{host_iota}}"
+							],
+							"port": "8088",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IoTAs / provisioned configurations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON;",
+									"try {",
+									"    tests[\"Body contains headers\"] = responseBody.has(\"headers\");",
+									"    responseJSON = JSON.parse(responseBody);",
+									"    tests[\"Header contains host\"] = \"host\" in responseJSON.headers;",
+									"    tests[\"Header contains test parameter sent as part of request header\"] = \"my-sample-header\" in responseJSON.headers;",
+									"}",
+									"catch (e) { }",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host_iota}}:8088/iot/services",
+							"protocol": "https",
+							"host": [
+								"{{host_iota}}"
+							],
+							"port": "8088",
+							"path": [
+								"iot",
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IoTAs / registered device",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON;",
+									"try {",
+									"    tests[\"Body contains headers\"] = responseBody.has(\"headers\");",
+									"    responseJSON = JSON.parse(responseBody);",
+									"    tests[\"Header contains host\"] = \"host\" in responseJSON.headers;",
+									"    tests[\"Header contains test parameter sent as part of request header\"] = \"my-sample-header\" in responseJSON.headers;",
+									"}",
+									"catch (e) { }",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host_iota}}:8088/iot/devices/id_sen1?protocol=IoTA-UL",
+							"protocol": "https",
+							"host": [
+								"{{host_iota}}"
+							],
+							"port": "8088",
+							"path": [
+								"iot",
+								"devices",
+								"id_sen1"
+							],
+							"query": [
+								{
+									"key": "protocol",
+									"value": "IoTA-UL"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IoTAs / provision configuration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON;",
+									"try {",
+									"    tests[\"Body contains headers\"] = responseBody.has(\"headers\");",
+									"    responseJSON = JSON.parse(responseBody);",
+									"    tests[\"Header contains host\"] = \"host\" in responseJSON.headers;",
+									"    tests[\"Header contains test parameter sent as part of request header\"] = \"my-sample-header\" in responseJSON.headers;",
+									"}",
+									"catch (e) { }",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r    \"services\": [\r        {\r            \"attributes\": [],\r            \"static_attributes\": [],\r            \"apikey\": \"AAFF9977\",\r            \"protocol\": [\r                \"IoTA-JSON\"\r            ],\r            \"entity_type\": \"lamp\"\r        }\r      ]\r}"
+						},
+						"url": {
+							"raw": "https://{{host_iota}}:8088/iot/services",
+							"protocol": "https",
+							"host": [
+								"{{host_iota}}"
+							],
+							"port": "8088",
+							"path": [
+								"iot",
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IoTAs / deregister UL device",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON;",
+									"try {",
+									"    tests[\"Body contains headers\"] = responseBody.has(\"headers\");",
+									"    responseJSON = JSON.parse(responseBody);",
+									"    tests[\"Header contains host\"] = \"host\" in responseJSON.headers;",
+									"    tests[\"Header contains test parameter sent as part of request header\"] = \"my-sample-header\" in responseJSON.headers;",
+									"}",
+									"catch (e) { }",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host_iota}}:8088/iot/devices/id_sen1?protocol=IoTA-UL",
+							"protocol": "https",
+							"host": [
+								"{{host_iota}}"
+							],
+							"port": "8088",
+							"path": [
+								"iot",
+								"devices",
+								"id_sen1"
+							],
+							"query": [
+								{
+									"key": "protocol",
+									"value": "IoTA-UL"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IoTAs / post UL data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "514ed2b6-b599-4f63-9f53-9fb31685d07f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}",
+								"disabled": true
+							},
+							{
+								"key": "x-auth-token",
+								"value": "{{token}}",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/plain"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "h|98#t|99"
+						},
+						"url": {
+							"raw": "http://{{host_iota}}:8085/iot/d?k={{UL_apikey}}&i={{device_ID}}&getCmd=0",
+							"protocol": "http",
+							"host": [
+								"{{host_iota}}"
+							],
+							"port": "8085",
+							"path": [
+								"iot",
+								"d"
+							],
+							"query": [
+								{
+									"key": "k",
+									"value": "{{UL_apikey}}"
+								},
+								{
+									"key": "i",
+									"value": "{{device_ID}}"
+								},
+								{
+									"key": "getCmd",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IoTAs / post UL data and get command",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "514ed2b6-b599-4f63-9f53-9fb31685d07f",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}",
+								"disabled": true
+							},
+							{
+								"key": "x-auth-token",
+								"value": "{{token}}",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/plain"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "hr|98#temp|99"
+						},
+						"url": {
+							"raw": "http://{{host_iota}}:8085/iot/d?k={{UL_apikey}}&i={{device_ID}}&getCmd=1",
+							"protocol": "http",
+							"host": [
+								"{{host_iota}}"
+							],
+							"port": "8085",
+							"path": [
+								"iot",
+								"d"
+							],
+							"query": [
+								{
+									"key": "k",
+									"value": "{{UL_apikey}}"
+								},
+								{
+									"key": "i",
+									"value": "{{device_ID}}"
+								},
+								{
+									"key": "getCmd",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IoTAs / post Json data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "514ed2b6-b599-4f63-9f53-9fb31685d07f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}",
+								"disabled": true
+							},
+							{
+								"key": "x-auth-token",
+								"value": "{{token}}",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"l\": 4, \n\t\"t\": 31.5\n}"
+						},
+						"url": {
+							"raw": "http://{{host_iota}}:8185/iot/json?k={{JSON_apikey}}&i={{device_ID}}&getCmd=0",
+							"protocol": "http",
+							"host": [
+								"{{host_iota}}"
+							],
+							"port": "8185",
+							"path": [
+								"iot",
+								"json"
+							],
+							"query": [
+								{
+									"key": "k",
+									"value": "{{JSON_apikey}}"
+								},
+								{
+									"key": "i",
+									"value": "{{device_ID}}"
+								},
+								{
+									"key": "getCmd",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IoTAs / modify device registration",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n    \"attributes\": [ \n          { \"object_id\": \"t\", \"name\": \"temperature\", \"type\": \"float\" },\n          { \"object_id\": \"h\", \"name\": \"humidity\", \"type\": \"float\" },\n          { \"object_id\": \"p\", \"name\": \"pressure\", \"type\": \"float\" }\n    ],\n    \"lazy\":[\n          { \"object_id\": \"l\", \"name\": \"luminosity\", \"type\": \"percentage\" }\n    ],\n    \"commands\": [\n          { \"object_id\": \"t\", \"name\": \"turn\", \"type\": \"command\" }\n    ],\n    \"static_attributes\": [\n          { \"name\": \"serialID\", \"type\": \"02598347\" }\n    ]\n}"
+						},
+						"url": {
+							"raw": "https://{{host_iota}}:8088/iot/devices/{{device_ID}}?protocol=IoTA-UL",
+							"protocol": "https",
+							"host": [
+								"{{host_iota}}"
+							],
+							"port": "8088",
+							"path": [
+								"iot",
+								"devices",
+								"{{device_ID}}"
+							],
+							"query": [
+								{
+									"key": "protocol",
+									"value": "IoTA-UL"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IoTAs / Push data to device",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"value": "{{subservice}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"value\":{\"123\":\"asdasdasd8882888\"},\"type\":\"command\"}"
+						},
+						"url": {
+							"raw": "https://{{host}}:10027/v1/contextEntities/type/{{device_type}}/id/{{device_ID}}/attributes/turn",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"port": "10027",
+							"path": [
+								"v1",
+								"contextEntities",
+								"type",
+								"{{device_type}}",
+								"id",
+								"{{device_ID}}",
+								"attributes",
+								"turn"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "333c1eba-5f88-4d3b-9443-66f691581bd7",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "40d94bba-afdd-4512-aae5-082529184d38",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
