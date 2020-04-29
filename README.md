@@ -159,12 +159,17 @@ curl -X GET  'http://localhost:1026/version'
 
 # Haciendo peticiones a la API NGSI
 
+Vamos a emplear la API NGSI V2 para hacer las peticiones. La documentación de referencia la podemos encontrar [aquí](Daniel Villalba
+    http://telefonicaid.github.io/fiware-orion/api/v2/stable/
+https://fiware-orion.readthedocs.io/en/master/user/walkthrough_apiv2/index.html)
+
+
 ## Crear de una entidad
 
 Vamos a crear nuestra primera entidad en el context broker. Esta entidad será de tipo coche o `Car`, con el identificador `entity-id:001` y con 3 atributos: 
-- `Brand` de tipo texto, con valor `Seat`
-- `Model` de tipo texto, con valor `Leon`
-- `Name` de tipo texto, con valor `Vehículo de antonio` 
+- `brand` de tipo texto, con valor `Seat`
+- `model` de tipo texto, con valor `Leon`
+- `name` de tipo texto, con valor `Vehículo de antonio` 
 
 Para ello ejecutamos el siguiente comando:
 
@@ -175,22 +180,15 @@ curl -iX POST 'http://localhost:1026/v2/entities' \
 {
     "id": "entity-id:001",
     "type": "Car",
-    "location": {
-        "type": "geo:json",
-        "value": {
-             "type": "Point",
-             "coordinates": [13.3986, 52.5547]
-        }
-    },
-    "Brand": {
+    "brand": {
         "type": "Text",
         "value": "Seat"
     },
-    "Model": {
+    "model": {
         "type": "Text",
         "value": "Leon"
     },
-    "Name": {
+    "name": {
         "type": "Text",
         "value": "Vehículo de Antonio"
     }
@@ -256,7 +254,7 @@ Content-Type: application/json
 Fiware-Correlator: 7ab153e8-7f3b-11ea-80ad-0242ac120003
 Date: Wed, 15 Apr 2020 17:06:42 GMT
 
-[{"id":"entity-id:001","type":"Car","Brand":{"type":"Text","value":"Seat","metadata":{}},"Model":{"type":"Text","value":"Leon","metadata":{}},"Name":{"type":"Text","value":"Vehículo de Antonio","metadata":{}},"location":{"type":"geo:json","value":{"type":"Point","coordinates":[13.3986,52.5547]},"metadata":{}}}]
+[{"id":"entity-id:001","type":"Car","brand":{"type":"Text","value":"Seat","metadata":{}},"model":{"type":"Text","value":"Leon","metadata":{}},"name":{"type":"Text","value":"Vehículo de Antonio","metadata":{}},"location":{"type":"geo:json","value":{"type":"Point","coordinates":[13.3986,52.5547]},"metadata":{}}}]
 ```
 
 Si damos formato a los datos de la respuesta de la petición, para que sea más sencillo de leer, podemos ver que es la entidad que hemos creado anteriormente, junto a las modificaciones que hemos hecho sobre ella.
@@ -266,17 +264,17 @@ Si damos formato a los datos de la respuesta de la petición, para que sea más 
   {
     "id": "entity-id:001",
     "type": "Car",
-    "Brand": {
+    "brand": {
       "type": "Text",
       "value": "Seat",
       "metadata": {}
     },
-    "Model": {
+    "model": {
       "type": "Text",
       "value": "Leon",
       "metadata": {}
     },
-    "Name": {
+    "name": {
       "type": "Text",
       "value": "Vehículo de Antonio",
       "metadata": {}
