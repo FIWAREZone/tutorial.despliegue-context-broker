@@ -11,8 +11,8 @@ Antes de poder seguir con este curso, es necesario cumplir con varias condicione
 
 Postman es un cliente de peticiones HTTP, que nos permitirá interactuar con la API NGSI de una forma gráfica, sencilla e intuitiva. Para obtener más información sobre como instalar y configurar Postman, así como para descargar la colección de peticiones y el fichero de variables de entorno, haz click [aquí](postman/README.md). También puedes descargar los ficheros a continuación:
 
-- [Colección de peticiones]()
-- [Fichero de entorno]()
+- [Colección de peticiones](https://raw.githubusercontent.com/FIWAREZone/tutorial.despliegue-context-broker/master/postman/FIWARE%20Zone%20Course.postman_collection.json)
+- [Fichero de entorno](https://raw.githubusercontent.com/FIWAREZone/tutorial.despliegue-context-broker/master/postman/FIWARE%20Zone%20Course%20Enviroment%20Template.postman_environment.json)
 
 ## Entorno donde correr Docker
 
