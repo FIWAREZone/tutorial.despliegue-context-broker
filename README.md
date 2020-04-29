@@ -1,11 +1,11 @@
 ![FIWARE Banner](https://fiware.github.io/tutorials.IoT-Sensors/img/fiware.png)[<img src="https://raw.githubusercontent.com/FIWAREZone/misc/master/Group%400%2C36x.png"  align="right">](http://www.fiware.zone)
 
-
-
 # Despliegue de Context Broker y uso de la plataforma Thinking Cities
 Este tutorial es una introducción al despliegue de un Context Broker en un entorno local y el uso de la plataforma Thinking Cities de Telefónica como plataforma comercial FIWARE.
 
 # Prerequisitos
+
+Antes de poder seguir con este curso, es necesario cumplir con varias condiciones, tenienodo que tener instalados diversos programas.
 
 ## Postman
 
@@ -27,17 +27,23 @@ A continuación se enlazan las guías de instalación de docker para los distint
 - **Windows**: https://docs.docker.com/docker-for-windows/install/
 - **MacOS**: https://docs.docker.com/docker-for-mac/install/
 
+Además de Docker, también será necesario disponer instalado de Docker-Compose. Tanto en Windows como en MacOS, Docker-Compose se instala con la instalación de Docker Desktop. Para linux podemos seguir las instrucciones reflejadas en la [guía](https://docs.docker.com/compose/install/).
+
+
 Para que el tutorial sea lo más homogéneo posible, vamos a instalar docker y docker-compose sobre una máquina virutal. Así, la ejecución de este tutorial será totalmente independiente del sistema operativo (huesped) y de la máquina en la que se corre.
 
 # Instalación máquina virtual con Linux
 
 ## Descarga e instalación de Virtualbox
 
+Es necesario de disponer de un software de virtualización para correr una máquina virtual dentro del sistema operativo. En este caso se recomienda usar Virtualbox puesto que es Open Source. Se puede descargar desde [aquí](https://www.virtualbox.org/wiki/Downloads
+).
+
 ## Descarga de Centos y creación de la máquina virtual
 
-En este caso queremos que la propia máquina virtual tenga una IP propia, por lo que en configuraciónes de red vamos a elegir la opción *****************
+En este caso queremos que la propia máquina virtual tenga una IP propia, por lo que en configuraciónes de red vamos a elegir la opción de `Adaptador de puente` o `Bridge`
 
-![Importar Environment](images/image2.png)
+![Importar Environment](images/image3.png)
 
 ## Conexión a la máquina virtual y primeros pasos
 Dado que Centos no se conecta de forma automática a la red, vamos a ejecutar el cliente DHCP para que la máquina obtenga IP.
@@ -52,7 +58,11 @@ A continuación vamos a comprobar la IP que tiene la máquina virtual para poder
 ip addr
 ```
 
-Una vez conocemos la IP de la máquina, abrimos una sesión SSH, para ello, en Windows podemos usar Símbolo de Sistema o PowerShell. Tanto en Linux como en MacOS, podemos usar la consola de comandos.
+La respuesta al comando debe ser algo similar a la siguiente imagen
+
+![Ver dirección IP](images/image2.png)
+
+De ella podemos deducir que la IP de la máquina es, para este ejemplo, `192.168.1.141`. Una vez conocemos la IP de la máquina, abrimos una sesión SSH, para ello, en Windows podemos usar Símbolo de Sistema o PowerShell. Tanto en Linux como en MacOS, podemos usar la consola de comandos.
 
 ```console
 ssh user@domain
@@ -98,7 +108,7 @@ sudo curl -L “https://github.com/docker/compose/releases/download/1.25.0/docke
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-# Desplegando Orion Context broker y probando su API
+# Despliegue de Orion Context Broker
 
 Antes de nada debemos descargarnos el fichero docker compose con el que vamos a desplegar el context broker
 
@@ -147,9 +157,9 @@ Desde el terminal, en la propia máquina virtual, podemos comprobarlo de la sigu
 curl -X GET  'http://localhost:1026/version'
 ```
 
-## Interactuando con la API
+# Haciendo peticiones a la API NGSI
 
-### Creación de una entidad
+## Crear de una entidad
 
 Vamos a crear nuestra primera entidad en el context broker. Esta entidad será de tipo coche o `Car`, con el identificador `entity-id:001` y con 3 atributos: 
 - `Brand` de tipo texto, con valor `Seat`
@@ -187,7 +197,7 @@ curl -iX POST 'http://localhost:1026/v2/entities' \
 }'
 ```
 
-El terminal nos devolvera la siguiente respuesta:
+El terminal nos devolvera la siguiente respuesta en la que podemos apreciar que la petición se ha ejecutado correctamente, devolviendonos un código de respuesta `201`
 
 ```
 HTTP/1.1 201 Created
@@ -198,16 +208,45 @@ Fiware-Correlator: 4905034e-7f3b-11ea-b71c-0242ac120003
 Date: Wed, 15 Apr 2020 17:05:19 GMT
 ```
 
-### Añadir un atributo a la entidad
+## Añadir un atributo a la entidad
+
+Para añadir un atributo a la entidad debemos hacer un `POST` a `/v2/entities/{{entity-id}}` donde `{{entity-id}}` es el identificador de la entidad que queremos modificar, en este caso, `entity-id:001`. El nuevo atributo a añadir se pasa en el cuerpo de la petición, en este caso se añade un nuevo atributo `location`. En caso de que el atributo ya exista, con esta petición lo va a sobreescribir. 
+
+```console
+curl -iX POST 'http://localhost:1026/v2/entities/entity-id:001/attrs' \
+-H 'Content-Type: application/json' \
+-d '
+{
+    "location": {
+        "type": "geo:json",
+        "value": {
+             "type": "Point",
+             "coordinates": [13.3986, 52.5547]
+        }
+    }
+}'
+```
+
+La respuesta del servidor debe ser un código 204
+
+```
+HTTP/1.1 204 No Content
+Connection: Keep-Alive
+Content-Length: 0
+Fiware-Correlator: 633ffc30-8a28-11ea-9e6a-0242ac120003
+Date: Wed, 29 Apr 2020 14:47:45 GMT
+```
 
 
+## Leer las entidades almacenadas
 
+Para leer todas las entidades debemos hacer una petición GET a /v2/entities como se muestra a continuación: 
 
-
-### Lectura de las entidades almacenadas
 ```console
 curl -iX GET 'http://localhost:1026/v2/entities'
 ```
+
+La respuesta nos devolverá un código 200 y un array JSON con las entidades disponibles en el Context Broker, tal y como se puede ver a continuación.
 
 ```console
 HTTP/1.1 200 OK
@@ -219,6 +258,8 @@ Date: Wed, 15 Apr 2020 17:06:42 GMT
 
 [{"id":"entity-id:001","type":"Car","Brand":{"type":"Text","value":"Seat","metadata":{}},"Model":{"type":"Text","value":"Leon","metadata":{}},"Name":{"type":"Text","value":"Vehículo de Antonio","metadata":{}},"location":{"type":"geo:json","value":{"type":"Point","coordinates":[13.3986,52.5547]},"metadata":{}}}]
 ```
+
+Si damos formato a los datos de la respuesta de la petición, para que sea más sencillo de leer, podemos ver que es la entidad que hemos creado anteriormente, junto a las modificaciones que hemos hecho sobre ella.
 
 ```json
 [
@@ -252,9 +293,26 @@ Date: Wed, 15 Apr 2020 17:06:42 GMT
       "metadata": {}
     }
   }
-]```
+]
+```
 
 
+## Borrar una entidad
 
+Para borrar una etidad sólamente hay que hacer una petición DELETE a /v2/entities/{{entity-id}}
+
+```console
+curl -iX DELETE 'http://localhost:1026/v2/entities/entity-id:001'
+```
+
+En este caso, el servidor nos debe devolver un código 204
+
+```
+HTTP/1.1 204 No Content
+Connection: Keep-Alive
+Content-Length: 0
+Fiware-Correlator: 5842c690-8a29-11ea-a7ab-0242ac120003
+Date: Wed, 29 Apr 2020 14:54:36 GMT
+```
 
 
