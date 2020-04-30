@@ -159,9 +159,7 @@ curl -X GET  'http://localhost:1026/version'
 
 # Haciendo peticiones a la API NGSI
 
-Vamos a emplear la API NGSI V2 para hacer las peticiones. La documentación de referencia la podemos encontrar [aquí](Daniel Villalba
-    http://telefonicaid.github.io/fiware-orion/api/v2/stable/
-https://fiware-orion.readthedocs.io/en/master/user/walkthrough_apiv2/index.html)
+Vamos a emplear la API NGSI V2 para hacer las peticiones. La documentación de referencia la podemos encontrar [aquí](    http://telefonicaid.github.io/fiware-orion/api/v2/stable/) o [aquí](https://fiware-orion.readthedocs.io/en/master/user/walkthrough_apiv2/index.html)
 
 
 ## Crear de una entidad
